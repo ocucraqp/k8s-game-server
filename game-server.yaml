@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django
+spec:
+  selector:
+    matchLabels:
+      app: django-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+       app: django-app
+    spec:
+      containers:
+        - name: sample-container
+          image: masapyon/game-server_server
+          ports:
+            - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: django-svc
+spec:
+  selector:
+    app: django-app
+  ports:
+    - protocol: TCP
+      port: 8000
+      name: django
+  type: NodePort
